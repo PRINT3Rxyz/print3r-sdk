@@ -1,4 +1,5 @@
 import * as React from "react";
+import "@rainbow-me/rainbowkit/styles.css";
 import {
   RainbowKitProvider,
   getDefaultWallets,
@@ -25,8 +26,8 @@ import { Chain } from "viem/chains";
 const { wallets } = getDefaultWallets();
 
 export const wagmi_config = getDefaultConfig({
-  appName: "PRINT3R",
-  projectId: "298c9f972e599b9f359c105f9ffece2b",
+  appName: "PRINT3R SDK",
+  projectId: "6f55cd09746c751c870f8205f87dcae0",
   wallets: [
     ...wallets,
     {
