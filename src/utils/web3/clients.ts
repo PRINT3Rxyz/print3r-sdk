@@ -6,10 +6,10 @@ type RpcUrl = {
 };
 
 export const RPC_URLS: RpcUrl = {
-  8453: process.env.NEXT_BASE_RPC_URL!,
-  84532: process.env.NEXT_BASE_SEPOLIA_RPC_URL!,
-  919: process.env.NEXT_MODE_SEPOLIA_RPC_URL!,
-  34443: process.env.NEXT_MODE_RPC_URL!,
+  8453: import.meta.env.VITE_BASE_RPC_URL!,
+  84532: import.meta.env.VITE_BASE_SEPOLIA_RPC_URL!,
+  919: import.meta.env.VITE_MODE_SEPOLIA_RPC_URL!,
+  34443: import.meta.env.VITE_MODE_RPC_URL!,
 };
 
 // @ts-ignore

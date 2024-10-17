@@ -7,15 +7,11 @@ const TabNavigation = ({
   setActiveTab,
   chartPositions,
   setChartPositions,
-  currentMarketOnly,
-  setCurrentMarketOnly,
 }: {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   chartPositions: boolean;
   setChartPositions: (chartPositions: boolean) => void;
-  currentMarketOnly: boolean;
-  setCurrentMarketOnly: (currentMarketOnly: boolean) => void;
 }) => {
   const tabs = [
     { name: "My Trades", trend: "up" },
@@ -47,8 +43,6 @@ const TabNavigation = ({
         shouldShow={true}
         chartPositions={chartPositions}
         setChartPositions={setChartPositions}
-        currentMarketOnly={currentMarketOnly}
-        setCurrentMarketOnly={setCurrentMarketOnly}
       />
     </div>
   );

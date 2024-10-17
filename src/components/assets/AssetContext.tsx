@@ -4,22 +4,18 @@ import { Asset } from "../../types/assets";
 interface AssetContextProps {
   asset: Asset | null;
   setAsset: (asset: Asset) => void;
-  allAssets: Asset[];
-  setAllAssets: (assets: Asset[]) => void;
 }
 
 const AssetContext = createContext<AssetContextProps | undefined>(undefined);
 
 export const AssetProvider: React.FC<
   AssetContextProps & { children: React.ReactNode }
-> = ({ asset, setAsset, allAssets, setAllAssets, children }) => {
+> = ({ asset, setAsset, children }) => {
   return (
     <AssetContext.Provider
       value={{
         asset,
         setAsset,
-        allAssets,
-        setAllAssets,
       }}
     >
       {children}

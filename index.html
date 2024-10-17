@@ -1,14 +1,35 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>React Trade SDK Example</title>
     <script src="/static/datafeeds/udf/dist/bundle.js"></script>
+    <!-- Include React and ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Styling -->
+    <link rel="stylesheet" href="dist/react-trade-sdk.css">
+    <!-- Include your SDK script -->
+    <script src="dist/react-trade-sdk.umd.js"></script>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- Div with ID trade-widget for rendering the SDK -->
+    <div id="trade-widget"></div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        ReactTradeSDK.initTradeSDK(document.getElementById('trade-widget'), {
+          customId: 'SOL:1',
+          colorScheme: 'dark',
+          customColors: {
+            primary: '#1a1a1a',
+            secondary: '#2a2a2a',
+            background: '#000000',
+            text: '#ffffff'
+          }
+        });
+      });
+    </script>
   </body>
 </html>

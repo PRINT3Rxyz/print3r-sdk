@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from "react";
-import AssetSelectPopup from "./AssetSelectPopup";
+import React, { useEffect } from "react";
 import { useAsset } from "./AssetContext";
-import { BsChevronDown } from "react-icons/bs";
 import { getImageForToken } from "../../utils/common/getTokenImage";
 
 const AssetSelect = () => {
-  const [showPopup, setShowPopup] = useState(false);
   const { asset, setAsset } = useAsset();
-
-  const handleTogglePopup = () => {
-    setShowPopup(!showPopup);
-  };
 
   useEffect(() => {
     if (!asset) {
@@ -41,10 +34,7 @@ const AssetSelect = () => {
 
   return (
     <div className="w-full md:min-w-max">
-      <div
-        onClick={handleTogglePopup}
-        className="flex flex-row gap-4 w-full lg:w-fit justify-between lg:justify-around items-center cursor-pointer transition-transform transform hover:opacity-85 opacity-100 hover:shadow-lg"
-      >
+      <div className="flex flex-row gap-4 w-full lg:w-fit justify-between lg:justify-around items-center cursor-pointer transition-transform transform hover:opacity-85 opacity-100 hover:shadow-lg">
         {asset ? (
           <div className="flex gap-4 items-center ">
             <img
@@ -77,13 +67,7 @@ const AssetSelect = () => {
             </div>
           </div>
         )}
-        <BsChevronDown
-          className={`text-printer-orange text-2xl font-bold transition-transform duration-300 ${
-            showPopup ? "rotate-180" : ""
-          }`}
-        />
       </div>
-      <AssetSelectPopup isOpen={showPopup} onClose={handleTogglePopup} />
     </div>
   );
 };

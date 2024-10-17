@@ -50,9 +50,8 @@ export const STABLECOINS = [
 export const config = createConfig({
   chains: [baseSepolia, modeTestnet],
   transports: {
-    // [base.id]: http(process.env.NEXT_BASE_MAINNET_RPC_URL),
-    [baseSepolia.id]: http(process.env.NEXT_BASE_SEPOLIA_RPC_URL),
-    [modeTestnet.id]: http(process.env.NEXT_MODE_SEPOLIA_RPC_URL),
+    [baseSepolia.id]: http(import.meta.env.VITE_BASE_SEPOLIA_RPC_URL),
+    [modeTestnet.id]: http(import.meta.env.VITE_MODE_SEPOLIA_RPC_URL),
   },
 });
 

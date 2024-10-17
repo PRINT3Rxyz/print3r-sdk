@@ -24,7 +24,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
   triggerGetTradeData,
   prices,
 }) => {
-  const { allAssets, setAsset } = useAsset();
+  const { setAsset } = useAsset();
 
   const [vaultPrices, setVaultPrices] = useState<{
     ethPrice: number;
@@ -54,12 +54,6 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
 
     fetchVaultPrices();
   }, [chainId]);
-
-  const handleAssetSwitch = async (symbol: string) => {
-    const asset = allAssets.find((asset) => asset.symbol === symbol);
-    if (!asset) return;
-    setAsset(asset);
-  };
 
   const checkCancellableOrders = async () => {
     const cancellable: { [key: string]: boolean } = {};
@@ -111,7 +105,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
     };
 
     orders.forEach((order) => getLeverage(order));
-  }, [allAssets, orders, vaultPrices]);
+  }, [orders, vaultPrices]);
 
   const getColourForOrderType = (orderType: string) => {
     switch (orderType) {
@@ -160,7 +154,6 @@ const OrdersTable: React.FC<OrdersTableProps> = ({
           return (
             <tr
               key={index}
-              onClick={() => handleAssetSwitch(order.symbol)}
               className="border-y-cardborder border-y-1 bg-card-grad cursor-pointer"
             >
               <td className="px-6 py-4 whitespace-nowrap">

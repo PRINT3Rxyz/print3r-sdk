@@ -56,6 +56,7 @@ export default {
         "disabled-button": "linear-gradient(180deg, #282F39 0%, #1F242B 100%)",
         "p3-button-hover": "linear-gradient(0deg, #F05722 0%, #B03E17 100%)",
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "secondary-banner": "url('/img/common/airdrop-bg.png')",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         "card-grad": "linear-gradient(180deg, #1A1C2A 0%, #0C0C0F 100%)",

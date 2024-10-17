@@ -34,12 +34,14 @@ import useInterval from "../hooks/useInterval";
 import { TVDataProvider } from "../utils/tradingview/TVDataProvider";
 import { v4 as uuidv4 } from "uuid";
 import { debounce } from "lodash";
-import { useLocation } from "react-router-dom";
 import TradingViewChart from "./TVChartContainer/TradingViewChart";
+import { getPublicClient } from "../utils/web3/clients";
+import { contractAddresses } from "../utils/web3/contractAddresses";
+import { MarketFactoryABI } from "../utils/web3/abis/MarketFactory";
 
 const userXp = 1000;
 
-const TradePage = () => {
+const TradePage = ({ customId }: { customId: string }) => {
   const [activeTab, setActiveTab] = useState("My Trades");
   const { width } = useWindowSize();
   const windowLtXl = width && width < 1280;
@@ -50,7 +52,6 @@ const TradePage = () => {
   // Chart Price
   const [chartPrice, setChartPrice] = useState(0);
   const [asset, setAsset] = useState<Asset | null>(null);
-  const [allAssets, setAllAssets] = useState<Asset[]>([]);
   const [isLong, setIsLong] = useState(true);
   const [activeType, setActiveType] = useState("Market");
   const [openPositions, setOpenPositions] = useState<Position[]>([]);
@@ -66,7 +67,6 @@ const TradePage = () => {
   const [isTableLoading, setIsTableLoading] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [isTradeModalOpen, setIsTradeModalOpen] = useState(false);
-  const [currentMarketOnly, setCurrentMarketOnly] = useState(false);
   const [refreshVolume, setRefreshVolume] = useState(0);
   const [marketTokenPrices, setMarketTokenPrices] = useState<{
     ethPrice: number;
@@ -208,7 +208,7 @@ const TradePage = () => {
       if (
         !chainId ||
         !account ||
-        allAssets.length === 0 ||
+        !customId ||
         marketTokenPrices.ethPrice === 0 ||
         marketTokenPrices.usdcPrice === 0
       ) {
@@ -242,7 +242,7 @@ const TradePage = () => {
     [
       chainId,
       account,
-      allAssets.length,
+      customId,
       marketTokenPrices.ethPrice,
       marketTokenPrices.usdcPrice,
     ]
@@ -291,8 +291,25 @@ const TradePage = () => {
     fetchMarketTokenPrices();
   }, []);
 
+  /**
+   * Get marketId from custom id and use that to fetch asset --> MarketFactory.getMarketForTicker(customId)
+   */
   useEffect(() => {
-    const fetchAllAssets = async () => {
+    const fetchAsset = async () => {
+      if (!customId) return;
+
+      const publicClient = getPublicClient(chainId);
+
+      const marketFactory = contractAddresses[chainId]
+        .MARKET_FACTORY as `0x${string}`;
+
+      const marketId = await publicClient.readContract({
+        abi: MarketFactoryABI,
+        address: marketFactory,
+        functionName: "getMarketForTicker",
+        args: [customId],
+      });
+
       let chainName = chainId ? getNameFromChainId(chainId) : "baseSepolia";
 
       const BACKEND_URL =
@@ -300,7 +317,7 @@ const TradePage = () => {
 
       try {
         const response = await fetch(
-          `${BACKEND_URL}/assets?chain=${chainName}`,
+          `${BACKEND_URL}/assets/asset?chain=${chainName}&marketId=${marketId}`,
           {
             method: "GET",
           }
@@ -310,19 +327,16 @@ const TradePage = () => {
           throw new Error(`Failed to fetch assets: ${response.statusText}`);
         }
 
-        const assets: Asset[] = await response.json();
+        const asset: Asset = await response.json();
 
-        setAllAssets(assets);
-        if (assets.length > 0) {
-          setAsset(assets[0]);
-        }
+        setAsset(asset);
       } catch (error) {
         console.error("Error fetching listed assets:", error);
       }
     };
 
-    fetchAllAssets();
-  }, [chainId, isLoading]);
+    fetchAsset();
+  }, [chainId, customId, isLoading]);
 
   useEffect(() => {
     if (tvDataProviderRef.current) {
@@ -458,12 +472,7 @@ const TradePage = () => {
   const isMarkPriceReady = markPrice !== 0;
 
   return (
-    <AssetProvider
-      asset={asset}
-      setAsset={setAsset}
-      allAssets={allAssets}
-      setAllAssets={setAllAssets}
-    >
+    <AssetProvider asset={asset} setAsset={setAsset}>
       <div
         className={`flex flex-col gap-4 relative lg:gap-0 lg:mt-0 lg:px-0 lg:flex-row w-full md:max-h-[90vh] bottom-0 left-0 right-0 bg-[#07080A] max-w-[2000px]  mx-auto 3xl:border-b border-cardborder 3xl:border-x`}
       >
@@ -495,8 +504,6 @@ const TradePage = () => {
             setActiveTab={setActiveTab}
             chartPositions={showPositionLines}
             setChartPositions={setShowPositionLines}
-            currentMarketOnly={currentMarketOnly}
-            setCurrentMarketOnly={setCurrentMarketOnly}
           />
 
           <Positions
@@ -506,7 +513,7 @@ const TradePage = () => {
             closedPositions={closedPositions}
             triggerGetTradeData={refreshPositionData}
             isTableLoading={isTableLoading}
-            currentMarketOnly={currentMarketOnly}
+            currentMarketOnly={true}
             pendingPositions={pendingPositions}
             updateMarketStats={fetchMarketStats}
             decreasingPosition={decreasingPosition}
@@ -562,7 +569,7 @@ const TradePage = () => {
         </div>
       </div>
       {isTablet && (
-        <div className="fixed bottom-[4.6rem] md:bottom-[7.3rem] z-50 left-0 right-0 bg-card-grad border-y-2 border-cardborder p-4">
+        <div className="fixed bottom-[0rem] z-50 left-0 right-0 bg-card-grad border-y-2 border-cardborder p-4">
           <TradeButtons
             isLong={isLong}
             setIsLong={setIsLong}

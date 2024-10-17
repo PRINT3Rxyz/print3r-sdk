@@ -64,18 +64,12 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
   pendingPositions,
   decreasingPosition,
 }) => {
-  const { allAssets, setAsset } = useAsset();
+  const { setAsset } = useAsset();
 
   const [isOpen, setIsOpen] = useState<boolean[]>([]);
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(
     null
   );
-
-  const handleAssetSwitch = async (customId: string) => {
-    const asset = allAssets.find((asset) => asset.customId === customId);
-    if (!asset) return;
-    setAsset(asset);
-  };
 
   const handleOptionClick = (
     index: number,
@@ -293,11 +287,6 @@ const OpenPositionsTable: React.FC<OpenPositionsTableProps> = ({
           return (
             <tr
               key={position.id || index}
-              onClick={() =>
-                !isPending &&
-                !isDecreasing &&
-                handleAssetSwitch(position.symbol)
-              }
               className={`border-y-cardborder border-y-1 bg-card-grad ${
                 isPending || isDecreasing ? "opacity-75" : "cursor-pointer"
               }`}

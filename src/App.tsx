@@ -3,13 +3,14 @@ import { Providers } from "./providers/providers";
 import NavBar from "./components/nav/NavBar";
 import { ToastContainer } from "react-toastify";
 import TradePage from "./components/TradePage";
+import { SDKOptions } from "./types/index";
 
-const App: React.FC = () => {
+const App: React.FC<SDKOptions> = ({ customId, colorScheme, customColors }) => {
   return (
     <>
       <Providers>
         <NavBar />
-        <TradePage />
+        <TradePage customId={customId} />
       </Providers>
       <ToastContainer
         className={"text-sm"}

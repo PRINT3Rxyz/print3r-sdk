@@ -34,7 +34,7 @@ const TradeTable: React.FC<TradeTableProps> = ({
   decreasingPosition,
   setDecreasingPosition,
 }) => {
-  const { asset, allAssets, setAsset } = useAsset();
+  const { asset, setAsset } = useAsset();
 
   const [symbols, setSymbols] = useState<string[]>([]);
 
@@ -91,15 +91,7 @@ const TradeTable: React.FC<TradeTableProps> = ({
     console.log("Order closed:", order);
   };
 
-  const handleAssetSwitch = async (symbol: string) => {
-    const asset = allAssets.find((asset) => asset.symbol === symbol);
-    if (!asset) return;
-    setAsset(asset);
-  };
-
   const handleDecreaseClick = (position: any) => {
-    handleAssetSwitch(position.symbol);
-
     setModalContent(
       <DecreasePosition
         onClose={() => setIsModalOpen(false)}
