@@ -19,15 +19,11 @@
     <div id="trade-widget"></div>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        ReactTradeSDK.initTradeSDK(document.getElementById('trade-widget'), {
-          customId: 'SOL:1',
-          colorScheme: 'dark',
-          customColors: {
-            primary: '#1a1a1a',
-            secondary: '#2a2a2a',
-            background: '#000000',
-            text: '#ffffff'
-          }
+        ReactTradeSDK.initTradeSDK(document.getElementById("trade-widget"), {
+          customId: "SOL:1",
+          colorScheme: "dark",
+          chainName: "baseSepolia",
+          logo: "/img/nav-logo.png",
         });
       });
     </script>

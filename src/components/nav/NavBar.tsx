@@ -26,7 +26,7 @@ import {
 import { BsChevronDown } from "react-icons/bs";
 import useWindowSize from "../../hooks/useWindowSize";
 
-const NavBar: React.FC = () => {
+const NavBar: React.FC<{ logo: string }> = ({ logo }) => {
   const [currentChainImg, setCurrentChainImg] = useState<string | null>(null);
 
   const { disconnect } = useDisconnect();
@@ -112,9 +112,9 @@ const NavBar: React.FC = () => {
         <div className="flex items-center">
           <a className="" href="https://v2-homepage.vercel.app/">
             <img
-              src={"/img/nav-logo.png"}
+              src={logo || "/img/nav-logo.png"}
               className="w-32 sm:w-36 md:w-44 h-auto"
-              alt="PRINT Logo"
+              alt="Project Logo"
               // width={128}
               // height={128}
             />

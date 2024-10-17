@@ -11,7 +11,8 @@ export const initTradeSDK = (element: HTMLElement, options: SDKOptions) => {
       <App
         customId={options.customId}
         colorScheme={options.colorScheme}
-        customColors={options.customColors}
+        chainName={options.chainName}
+        logo={options.logo}
       />
     </React.StrictMode>
   );

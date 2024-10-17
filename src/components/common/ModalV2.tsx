@@ -17,7 +17,6 @@ type ModalV2Props = {
     | "4xl"
     | "5xl"
     | "full";
-  mainLoader?: boolean;
   placement?:
     | "center"
     | "auto"
@@ -35,15 +34,14 @@ const ModalV2 = ({
   setIsModalOpen,
   children,
   size = "xl",
-  mainLoader,
   placement,
   style = "default",
   fullScreenOnMobile = true,
 }: ModalV2Props) => {
   const { width } = useWindowSize();
-  const prevIsOpenRef = useRef(isOpen);
 
-  const fullHeight = fullScreenOnMobile && width && width < 768 ? true : false;
+  const isMobile = width && width < 768;
+  const fullHeight = fullScreenOnMobile && isMobile;
 
   const handleOpenChange = (open: boolean) => {
     setIsModalOpen(open);
@@ -57,22 +55,19 @@ const ModalV2 = ({
       backdrop="blur"
       placement={placement ? placement : "center"}
       hideCloseButton={true}
-      size={size}
+      size={isMobile && fullScreenOnMobile ? "full" : size}
       radius="lg"
       shadow="lg"
       className={`${fullHeight ? "h-full max-h-screen" : ""} overflow-x-hidden`}
       classNames={{
-        body: mainLoader
-          ? ""
-          : style === "default"
-          ? "bg-card-grad h-full shadow-lg pb-10 md:p-0 rounded-lg overflow-x-hidden"
-          : "bg-input-grad h-full shadow-lg pb-10 md:p-0 rounded-lg overflow-x-hidden",
-        base: mainLoader
-          ? "bg-transparent"
-          : `rounded-lg border-cardborder border-2 modal-gradient-shadow ${
-              fullHeight ? "h-full max-h-screen" : ""
-            } overflow-x-hidden`,
-        backdrop: mainLoader ? "" : "bg-black/50 backdrop-opacity-40",
+        body:
+          style === "default"
+            ? "bg-card-grad h-full shadow-lg pb-10 md:p-0 rounded-lg overflow-x-hidden"
+            : "bg-input-grad h-full shadow-lg pb-10 md:p-0 rounded-lg overflow-x-hidden",
+        base: `rounded-lg border-cardborder border-2 modal-gradient-shadow ${
+          fullHeight ? "h-full max-h-screen" : ""
+        } overflow-x-hidden`,
+        backdrop: "bg-black/50 backdrop-opacity-40",
         wrapper: fullHeight ? "h-full max-h-screen overflow-x-hidden" : "",
       }}
     >
@@ -81,7 +76,7 @@ const ModalV2 = ({
       >
         <ModalBody
           className={`${fullHeight ? "h-full p-0" : ""} ${
-            fullScreenOnMobile && width && width < 768 ? "pb-20" : ""
+            isMobile ? "pb-20" : ""
           } overflow-x-hidden`}
         >
           {children}

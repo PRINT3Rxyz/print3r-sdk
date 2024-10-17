@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import AssetBanner from "./assets/AssetBanner";
 import Positions from "./positions/Positions";
-import PointsBanner from "./common/PointsBanner";
 import TabNavigation from "./positions/TabNavigation";
 import useWindowSize from "../hooks/useWindowSize";
 import { AssetProvider } from "./assets/AssetContext";
@@ -39,9 +38,13 @@ import { getPublicClient } from "../utils/web3/clients";
 import { contractAddresses } from "../utils/web3/contractAddresses";
 import { MarketFactoryABI } from "../utils/web3/abis/MarketFactory";
 
-const userXp = 1000;
-
-const TradePage = ({ customId }: { customId: string }) => {
+const TradePage = ({
+  customId,
+  chainName,
+}: {
+  customId: string;
+  chainName: string;
+}) => {
   const [activeTab, setActiveTab] = useState("My Trades");
   const { width } = useWindowSize();
   const windowLtXl = width && width < 1280;
@@ -523,11 +526,6 @@ const TradePage = ({ customId }: { customId: string }) => {
         <div
           className={`flex flex-col justify-start lg:w-[30%] lg:sticky lg:max-h-[90vh] lg:right-0 lg:top-0 lg:overflow-y-auto no-scrollbar pb-20 lg:pb-20`}
         >
-          <PointsBanner
-            variant="exchange"
-            userXp={userXp}
-            shouldShow={!windowLtXl}
-          />
           {!isTablet && (
             <div className="flex flex-col w-full h-auto">
               <div className="flex flex-col w-full gap-4 bg-card-grad border-cardborder border-2 lg:!border-l-0 p-4">

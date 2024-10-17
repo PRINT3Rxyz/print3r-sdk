@@ -5,12 +5,17 @@ import { ToastContainer } from "react-toastify";
 import TradePage from "./components/TradePage";
 import { SDKOptions } from "./types/index";
 
-const App: React.FC<SDKOptions> = ({ customId, colorScheme, customColors }) => {
+const App: React.FC<SDKOptions> = ({
+  customId,
+  colorScheme,
+  chainName,
+  logo,
+}) => {
   return (
     <>
       <Providers>
-        <NavBar />
-        <TradePage customId={customId} />
+        <NavBar logo={logo} />
+        <TradePage customId={customId} chainName={chainName} />
       </Providers>
       <ToastContainer
         className={"text-sm"}
